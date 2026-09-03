@@ -45,6 +45,9 @@ let package = Package(
         .testTarget(
             name: "ServerDrivenKitTests",
             dependencies: ["ServerDrivenKit"],
+            resources: [
+                .process("Fixtures")
+            ],
             swiftSettings: [
                 .defaultIsolation(MainActor.self),
                 .enableExperimentalFeature("StrictConcurrency=targeted")
