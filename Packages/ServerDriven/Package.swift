@@ -26,7 +26,6 @@ let package = Package(
             name: "ServerDrivenKit",
             dependencies: ["ServerDrivenMacros"],
             swiftSettings: [
-                .defaultIsolation(MainActor.self),
                 .enableExperimentalFeature("StrictConcurrency=targeted")
             ]
         ),
