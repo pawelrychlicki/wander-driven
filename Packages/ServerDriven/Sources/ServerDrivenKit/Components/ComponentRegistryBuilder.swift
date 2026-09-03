@@ -28,6 +28,6 @@ public enum ComponentRegistryBuilder {
     public static func buildArray(
         _ components: [[AnyComponentRegistration]]
     ) -> [AnyComponentRegistration] {
-        components.flatMap { $0 }
+        components.flatMap(\.self)
     }
 }

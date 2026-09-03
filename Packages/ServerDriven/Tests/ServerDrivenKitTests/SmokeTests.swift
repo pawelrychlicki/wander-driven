@@ -1,5 +1,5 @@
-import Testing
 @testable import ServerDrivenKit
+import Testing
 
 @Test("ServerDrivenKit exposes its package version")
 func packageVersionIsAvailable() {

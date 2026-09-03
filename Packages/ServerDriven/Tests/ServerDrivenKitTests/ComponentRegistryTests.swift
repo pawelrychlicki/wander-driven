@@ -1,7 +1,6 @@
+@testable import ServerDrivenKit
 import SwiftUI
 import Testing
-
-@testable import ServerDrivenKit
 
 struct ComponentRegistryTests {
     @Test("registers and resolves a strongly typed component")
@@ -66,9 +65,10 @@ struct ComponentRegistryTests {
             let text: String
         }
 
+        @MainActor
         static func makeView(
             properties: Properties,
-            context: ComponentContext
+            context _: ComponentContext
         ) -> some View {
             Text(properties.text)
         }
@@ -80,9 +80,10 @@ struct ComponentRegistryTests {
             let label: String
         }
 
+        @MainActor
         static func makeView(
             properties: Properties,
-            context: ComponentContext
+            context _: ComponentContext
         ) -> some View {
             Text(properties.label)
         }

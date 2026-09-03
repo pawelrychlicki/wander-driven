@@ -25,7 +25,8 @@ public struct SDUIComponentMacro: MemberMacro {
 
         guard let identifierLiteral = identifierLiteral(from: node),
               let identifier = identifierLiteral.segments.first?.as(StringSegmentSyntax.self)?.content.text,
-              identifierLiteral.segments.count == 1 else {
+              identifierLiteral.segments.count == 1
+        else {
             context.diagnose(
                 Diagnostic(
                     node: node,
@@ -49,14 +50,18 @@ public struct SDUIComponentMacro: MemberMacro {
             return []
         }
 
+        let visibility = declaration.modifiers.contains {
+            $0.name.text == "public"
+        } ? "public " : ""
+
         return [
-            "static let componentType: String = \(identifierLiteral)",
+            "\(raw: visibility)static let componentType: String = \(identifierLiteral)",
             """
             @MainActor
-            static var registration: AnyComponentRegistration {
+            \(raw: visibility)static var registration: AnyComponentRegistration {
                 AnyComponentRegistration(Self.self)
             }
-            """
+            """,
         ]
     }
 
@@ -64,7 +69,8 @@ public struct SDUIComponentMacro: MemberMacro {
         from node: AttributeSyntax
     ) -> StringLiteralExprSyntax? {
         guard let arguments = node.arguments?.as(LabeledExprListSyntax.self),
-              let firstArgument = arguments.first else {
+              let firstArgument = arguments.first
+        else {
             return nil
         }
 

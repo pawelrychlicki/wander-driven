@@ -6,6 +6,7 @@ public protocol ComponentDefinition {
 
     static var componentType: String { get }
 
+    @MainActor
     static func makeView(
         properties: Properties,
         context: ComponentContext

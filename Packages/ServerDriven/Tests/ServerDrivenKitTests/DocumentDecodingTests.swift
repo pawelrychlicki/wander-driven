@@ -1,7 +1,6 @@
 import Foundation
-import Testing
-
 @testable import ServerDrivenKit
+import Testing
 
 struct DocumentDecodingTests {
     @Test("decodes a versioned recursive screen document")
@@ -18,13 +17,13 @@ struct DocumentDecodingTests {
         #expect(document.root.children[0].type == "text")
         #expect(
             document.root.children[0].properties == .object([
-                "text": .string("Explore your next escape")
+                "text": .string("Explore your next escape"),
             ])
         )
         #expect(document.root.children[1].actions == [
             DocumentAction(type: "navigate", payload: .object([
-                "destinationID": .string("lisbon")
-            ]))
+                "destinationID": .string("lisbon"),
+            ])),
         ])
     }
 
@@ -33,7 +32,7 @@ struct DocumentDecodingTests {
         let value: JSONValue = .object([
             "enabled": .bool(true),
             "count": .number(3),
-            "tags": .array([.string("coast"), .null])
+            "tags": .array([.string("coast"), .null]),
         ])
 
         let encoded = try JSONEncoder().encode(value)

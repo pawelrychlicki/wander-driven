@@ -14,7 +14,7 @@ public struct AnyComponentRegistration {
 
     private let render: (JSONValue, ComponentContext) throws -> AnyView
 
-    public init<Definition: ComponentDefinition>(_ definition: Definition.Type) {
+    public init<Definition: ComponentDefinition>(_: Definition.Type) {
         componentType = Definition.componentType
         render = { properties, context in
             do {

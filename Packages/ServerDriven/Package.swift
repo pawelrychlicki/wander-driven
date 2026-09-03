@@ -7,7 +7,7 @@ let package = Package(
     name: "ServerDriven",
     platforms: [
         .iOS(.v26),
-        .macOS(.v10_15)
+        .macOS(.v26)
     ],
     products: [
         .library(

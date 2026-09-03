@@ -61,7 +61,7 @@ public struct ComponentRegistry {
         }
 
         do {
-            return .rendered(try registration.makeView(for: node, context: context))
+            return try .rendered(registration.makeView(for: node, context: context))
         } catch let error as ComponentRegistrationError {
             switch error {
             case let .invalidProperties(componentType, message):

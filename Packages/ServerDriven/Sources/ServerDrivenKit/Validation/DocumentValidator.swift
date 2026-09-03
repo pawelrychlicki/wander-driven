@@ -120,7 +120,8 @@ public struct DocumentValidator: Sendable {
     ) {
         guard case let .object(values) = payload,
               case let .string(value) = values[field],
-              !value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+              !value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        else {
             issues.append(
                 ValidationIssue(
                     code: .missingActionField,

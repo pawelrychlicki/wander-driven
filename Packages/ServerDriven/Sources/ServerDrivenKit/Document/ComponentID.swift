@@ -22,7 +22,7 @@ public struct ComponentID: Hashable, Sendable, Codable, RawRepresentable, Expres
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
-        self.rawValue = try container.decode(String.self)
+        rawValue = try container.decode(String.self)
     }
 
     public func encode(to encoder: Encoder) throws {

@@ -1,7 +1,6 @@
+@testable import ServerDrivenKit
 import SwiftUI
 import Testing
-
-@testable import ServerDrivenKit
 
 struct ComponentResolutionTests {
     @Test("resolves a registered component into a rendered view")
@@ -99,9 +98,10 @@ struct ComponentResolutionTests {
             let title: String
         }
 
+        @MainActor
         static func makeView(
             properties: Properties,
-            context: ComponentContext
+            context _: ComponentContext
         ) -> some View {
             Text(properties.title)
         }

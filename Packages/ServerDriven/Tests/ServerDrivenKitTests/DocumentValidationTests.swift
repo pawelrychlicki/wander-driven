@@ -1,6 +1,5 @@
-import Testing
-
 @testable import ServerDrivenKit
+import Testing
 
 struct DocumentValidationTests {
     @Test("accepts a valid version one document")
@@ -16,10 +15,10 @@ struct DocumentValidationTests {
                         DocumentAction(
                             type: "navigate",
                             payload: .object([
-                                "destinationID": .string("lisbon")
+                                "destinationID": .string("lisbon"),
                             ])
-                        )
-                    ])
+                        ),
+                    ]),
                 ]
             )
         )
@@ -49,8 +48,8 @@ struct DocumentValidationTests {
                 children: [
                     ScreenNode(id: "duplicate", type: "text"),
                     ScreenNode(id: "nested", type: "vertical", children: [
-                        ScreenNode(id: "duplicate", type: "badge")
-                    ])
+                        ScreenNode(id: "duplicate", type: "badge"),
+                    ]),
                 ]
             )
         )

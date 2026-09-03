@@ -1,8 +1,7 @@
+@testable import ServerDrivenMacros
 import SwiftSyntaxMacros
 import SwiftSyntaxMacrosTestSupport
 import Testing
-
-@testable import ServerDrivenMacros
 
 struct SDUIComponentMacroTests {
     @Test("generates the component type and registry adapter")
@@ -40,7 +39,7 @@ struct SDUIComponentMacroTests {
                     message: "Component identifiers must not be empty.",
                     line: 1,
                     column: 1
-                )
+                ),
             ],
             macros: ["SDUIComponent": SDUIComponentMacro.self]
         )
