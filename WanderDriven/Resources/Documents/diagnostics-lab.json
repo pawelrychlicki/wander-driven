@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "root": {
+    "id": "diagnostics-screen",
+    "type": "scroll",
+    "properties": {
+      "spacing": 18
+    },
+    "children": [
+      {
+        "id": "diagnostics-title",
+        "type": "text",
+        "properties": {
+          "text": "Resilience lab",
+          "style": "largeTitle"
+        }
+      },
+      {
+        "id": "diagnostics-intro",
+        "type": "text",
+        "properties": {
+          "text": "Two intentionally broken nodes sit beside valid content. The renderer contains each failure and keeps the rest of the tree usable.",
+          "style": "body"
+        }
+      },
+      {
+        "id": "diagnostics-unknown",
+        "type": "future.component",
+        "properties": {
+          "message": "This component ships in a future schema."
+        }
+      },
+      {
+        "id": "diagnostics-invalid-properties",
+        "type": "destination.card",
+        "properties": {
+          "destinationID": 42,
+          "name": "Broken payload"
+        }
+      },
+      {
+        "id": "diagnostics-valid-sibling",
+        "type": "badge",
+        "properties": {
+          "text": "Valid sibling still rendered",
+          "tone": "success"
+        }
+      },
+      {
+        "id": "diagnostics-action",
+        "type": "button",
+        "properties": {
+          "title": "Show safe alert"
+        },
+        "actions": [
+          {
+            "type": "showAlert",
+            "payload": {
+              "title": "Diagnostics contained",
+              "message": "Unknown components and invalid properties render as safe fallback views."
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

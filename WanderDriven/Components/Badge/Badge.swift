@@ -27,9 +27,13 @@ struct Badge: ComponentDefinition {
     @MainActor
     static func makeView(
         properties: Properties,
-        context _: ComponentContext
+        context: ComponentContext
     ) -> some View {
-        BadgeView(text: properties.text, tone: properties.tone)
+        BadgeView(
+            text: properties.text,
+            tone: properties.tone,
+            accessibilityIdentifier: "sdui.\(context.componentID.rawValue)"
+        )
     }
 }
 

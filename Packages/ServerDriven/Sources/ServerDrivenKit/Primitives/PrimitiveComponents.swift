@@ -39,13 +39,14 @@ public struct TextComponent: ComponentDefinition {
     @MainActor
     public static func makeView(
         properties: Properties,
-        context _: ComponentContext
+        context: ComponentContext
     ) -> some View {
         Text(properties.text)
             .font(properties.style.font)
             .foregroundStyle(.primary)
             .multilineTextAlignment(.leading)
             .frame(maxWidth: .infinity, alignment: .leading)
+            .accessibilityIdentifier("sdui.\(context.componentID.rawValue)")
     }
 }
 
@@ -64,7 +65,7 @@ public struct ImageComponent: ComponentDefinition {
     @MainActor
     public static func makeView(
         properties: Properties,
-        context _: ComponentContext
+        context: ComponentContext
     ) -> some View {
         Image(systemName: properties.systemName)
             .resizable()
@@ -75,6 +76,7 @@ public struct ImageComponent: ComponentDefinition {
             .accessibilityLabel(
                 properties.accessibilityLabel ?? properties.systemName
             )
+            .accessibilityIdentifier("sdui.\(context.componentID.rawValue)")
     }
 }
 
@@ -102,6 +104,7 @@ public struct ButtonComponent: ComponentDefinition {
         .buttonStyle(.borderedProminent)
         .frame(minWidth: 44, minHeight: 44)
         .accessibilityLabel(properties.title)
+        .accessibilityIdentifier("sdui.\(context.componentID.rawValue)")
     }
 }
 
@@ -114,9 +117,10 @@ public struct DividerComponent: ComponentDefinition {
     @MainActor
     public static func makeView(
         properties _: Properties,
-        context _: ComponentContext
+        context: ComponentContext
     ) -> some View {
         Divider()
             .padding(.vertical, 8)
+            .accessibilityIdentifier("sdui.\(context.componentID.rawValue)")
     }
 }

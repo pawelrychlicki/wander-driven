@@ -1,6 +1,6 @@
 import ServerDrivenKit
 
-enum AppRoute: Hashable, Identifiable {
+enum AppRoute: Hashable, Identifiable, Sendable {
     case discover
     case destination(ComponentID)
     case diagnostics

@@ -23,6 +23,7 @@ struct ScenarioPickerView: View {
                             }
                         }
                         .accessibilityHint("Opens the \(route.title) scenario")
+                        .accessibilityIdentifier("scenario.\(route.id)")
                     }
                 } header: {
                     Text("Travel scenarios")

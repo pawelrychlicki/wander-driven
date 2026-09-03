@@ -5,6 +5,7 @@ import Observation
 public final class ScreenStore {
     public let document: ScreenDocument
     public private(set) var state: ScreenState
+    public private(set) var stateRevision = 0
     public let reducer: ScreenReducer
     public let externalActionHandler: ExternalActionHandler
     public let effectExecutor: ScreenEffectExecutor
@@ -29,6 +30,7 @@ public final class ScreenStore {
     @discardableResult
     public func send(_ action: ScreenAction) -> [ScreenEffect] {
         let effects = reducer.reduce(&state, action)
+        stateRevision += 1
         for effect in effects {
             handle(effect)
         }

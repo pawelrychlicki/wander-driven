@@ -24,6 +24,7 @@ public struct UnsupportedComponentView: View {
         .background(.secondary.opacity(0.08), in: .rect(cornerRadius: 12))
         .accessibilityElement(children: .combine)
         .accessibilityLabel(policy.message(for: diagnostic))
+        .accessibilityIdentifier("diagnostic.\(diagnostic.componentID.rawValue)")
     }
 }
 
@@ -51,5 +52,6 @@ public struct InvalidComponentView: View {
         .background(.orange.opacity(0.1), in: .rect(cornerRadius: 12))
         .accessibilityElement(children: .combine)
         .accessibilityLabel(policy.message(for: diagnostic))
+        .accessibilityIdentifier("diagnostic.\(diagnostic.componentID.rawValue)")
     }
 }

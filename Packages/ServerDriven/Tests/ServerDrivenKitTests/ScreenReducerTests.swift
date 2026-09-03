@@ -28,6 +28,30 @@ struct ScreenReducerTests {
         #expect(state.componentStates["lisbon"]?.isFavorite == false)
     }
 
+    @Test("falls back to the source component when a business identifier is not a node id")
+    func togglesFavoriteUsingSourceComponent() {
+        let document = ScreenDocument(
+            schemaVersion: 1,
+            root: ScreenNode(
+                id: "root",
+                type: "vertical",
+                children: [ScreenNode(id: "lisbon-card", type: "destination.card")]
+            )
+        )
+        var state = ScreenState(document: document)
+        let action = DocumentAction(
+            type: "toggleFavorite",
+            payload: .object(["destinationID": .string("lisbon")])
+        )
+
+        _ = ScreenReducer().reduce(
+            &state,
+            .document(componentID: "lisbon-card", action: action)
+        )
+
+        #expect(state.componentStates["lisbon-card"]?.isFavorite == true)
+    }
+
     @Test("presents a structured alert from a document action")
     func presentsAlert() {
         let document = makeDocument()

@@ -51,7 +51,7 @@ final class UIKitMapPreviewView: UIView {
             coordinate.latitude,
             coordinate.longitude
         )
-        accessibilityLabel = "Map preview for (city)"
+        accessibilityLabel = "Map preview for \(city)"
         accessibilityValue = coordinatesLabel.text
     }
 

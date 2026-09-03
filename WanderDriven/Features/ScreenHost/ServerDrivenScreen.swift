@@ -9,11 +9,12 @@ struct ServerDrivenScreen: View {
         Group {
             if let store = model.store(for: route) {
                 ScreenRenderer(registry: model.registry)
-                    .render(store.document, send: { componentID, action in
+                    .render(store.document, state: store.state, send: { componentID, action in
                         store.send(
                             .document(componentID: componentID, action: action)
                         )
                     })
+                    .id(store.stateRevision)
                     .padding(.vertical)
                     .padding(.horizontal)
                     .alert(
@@ -45,8 +46,14 @@ struct ServerDrivenScreen: View {
                     .controlSize(.large)
             }
         }
+        .id(model.storeRevision)
         .navigationTitle(route.title)
         .navigationBarTitleDisplayMode(.inline)
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            if route == .diagnostics {
+                DiagnosticsOverlay(policy: .debug)
+            }
+        }
         .task(id: route) {
             model.prepareStore(for: route)
         }

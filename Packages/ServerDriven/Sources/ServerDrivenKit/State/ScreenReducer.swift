@@ -31,10 +31,12 @@ public struct ScreenReducer: Sendable {
     ) -> [ScreenEffect] {
         switch action.type {
         case "toggleFavorite":
-            guard let targetID = destinationID(in: action.payload) ??
-                (state.componentStates[componentID] == nil ? nil : componentID),
-                state.componentStates[targetID] != nil
-            else {
+            let requestedID = destinationID(in: action.payload)
+            let targetID = requestedID.flatMap {
+                state.componentStates[$0] == nil ? nil : $0
+            } ?? (state.componentStates[componentID] == nil ? nil : componentID)
+
+            guard let targetID else {
                 return []
             }
 

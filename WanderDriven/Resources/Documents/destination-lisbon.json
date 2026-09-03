@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "root": {
+    "id": "lisbon-details-screen",
+    "type": "scroll",
+    "properties": {
+      "spacing": 18
+    },
+    "children": [
+      {
+        "id": "lisbon-details-title",
+        "type": "text",
+        "properties": {
+          "text": "Lisbon",
+          "style": "largeTitle"
+        }
+      },
+      {
+        "id": "lisbon-details-badge",
+        "type": "badge",
+        "properties": {
+          "text": "Portugal · 3 days",
+          "tone": "accent"
+        }
+      },
+      {
+        "id": "lisbon-map",
+        "type": "map.preview",
+        "properties": {
+          "city": "Lisbon",
+          "latitude": 38.7223,
+          "longitude": -9.1393
+        }
+      },
+      {
+        "id": "lisbon-details-copy",
+        "type": "text",
+        "properties": {
+          "text": "Start at Alfama before the streets warm up, cross the river at golden hour, and leave room for one more pastel de nata.",
+          "style": "body"
+        }
+      },
+      {
+        "id": "lisbon-save-note",
+        "type": "button",
+        "properties": {
+          "title": "Save trip note"
+        },
+        "actions": [
+          {
+            "type": "showAlert",
+            "payload": {
+              "title": "Saved locally",
+              "message": "Your Lisbon note is ready for the next iteration of this demo."
+            }
+          }
+        ]
+      },
+      {
+        "id": "lisbon-details-footer",
+        "type": "badge",
+        "properties": {
+          "text": "UIKit map preview embedded in SwiftUI",
+          "tone": "neutral"
+        }
+      }
+    ]
+  }
+}

@@ -44,6 +44,7 @@ struct DestinationCard: ComponentDefinition {
         context: ComponentContext
     ) -> some View {
         DestinationCardView(
+            componentID: context.componentID,
             properties: properties,
             isFavorite: context.state.isFavorite,
             onFavorite: {

@@ -1,6 +1,8 @@
+import ServerDrivenKit
 import SwiftUI
 
 struct DestinationCardView: View {
+    let componentID: ComponentID
     let properties: DestinationCard.Properties
     let isFavorite: Bool
     let onFavorite: @MainActor @Sendable () -> Void
@@ -35,6 +37,7 @@ struct DestinationCardView: View {
                 .contentShape(.rect)
             }
             .buttonStyle(.plain)
+            .accessibilityIdentifier("sdui.\(componentID.rawValue).open")
             .accessibilityLabel("Open \(properties.name), \(properties.country)")
             .accessibilityHint("Shows destination details")
 
@@ -54,6 +57,7 @@ struct DestinationCardView: View {
                 }
                 .buttonStyle(.bordered)
                 .frame(minWidth: 44, minHeight: 44)
+                .accessibilityIdentifier("sdui.\(componentID.rawValue).favorite")
                 .accessibilityValue(isFavorite ? "Favorite" : "Not a favorite")
             }
         }

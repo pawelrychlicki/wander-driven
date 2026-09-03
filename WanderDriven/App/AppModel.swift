@@ -10,6 +10,7 @@ final class AppModel {
 
     var navigationPath: [AppRoute] = []
     private(set) var loadError: String?
+    private(set) var storeRevision = 0
 
     @ObservationIgnored
     private var stores: [AppRoute: ScreenStore] = [:]
@@ -17,11 +18,15 @@ final class AppModel {
     init(
         documentSource: any ScreenDocumentSource = BundleScreenDocumentSource(),
         validator: DocumentValidator = DocumentValidator(),
-        registry: ComponentRegistry? = nil
+        registry: ComponentRegistry? = nil,
+        initialRoute: AppRoute? = nil
     ) {
         self.documentSource = documentSource
         self.validator = validator
         self.registry = registry ?? Self.makeDefaultRegistry()
+        if let initialRoute {
+            navigationPath = [initialRoute]
+        }
     }
 
     func prepareStore(for route: AppRoute) {
@@ -45,9 +50,11 @@ final class AppModel {
                     self?.handleExternalAction(action)
                 }
             )
+            storeRevision += 1
             loadError = nil
         } catch {
             loadError = String(describing: error)
+            storeRevision += 1
         }
     }
 
@@ -57,6 +64,7 @@ final class AppModel {
 
     func retry(route: AppRoute) {
         stores[route] = nil
+        storeRevision += 1
         loadError = nil
         prepareStore(for: route)
     }

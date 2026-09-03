@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "root": {
+    "id": "discover-screen",
+    "type": "scroll",
+    "properties": {
+      "spacing": 18
+    },
+    "children": [
+      {
+        "id": "discover-kicker",
+        "type": "badge",
+        "properties": {
+          "text": "Curated escapes",
+          "tone": "accent"
+        }
+      },
+      {
+        "id": "discover-title",
+        "type": "text",
+        "properties": {
+          "text": "Find your next favourite corner of Europe",
+          "style": "largeTitle"
+        }
+      },
+      {
+        "id": "discover-intro",
+        "type": "text",
+        "properties": {
+          "text": "A small server-driven feed rendered locally, with state and navigation owned by the host app.",
+          "style": "body"
+        }
+      },
+      {
+        "id": "lisbon-card",
+        "type": "destination.card",
+        "properties": {
+          "destinationID": "lisbon",
+          "name": "Lisbon",
+          "country": "Portugal",
+          "summary": "Tram-lined hills, tiled courtyards and Atlantic light.",
+          "imageSystemName": "sun.horizon"
+        },
+        "actions": [
+          {
+            "type": "navigate",
+            "payload": {
+              "destinationID": "lisbon"
+            }
+          },
+          {
+            "type": "toggleFavorite",
+            "payload": {
+              "destinationID": "lisbon"
+            }
+          }
+        ]
+      },
+      {
+        "id": "porto-card",
+        "type": "destination.card",
+        "properties": {
+          "destinationID": "porto",
+          "name": "Porto",
+          "country": "Portugal",
+          "summary": "Granite lanes, river views and a slower kind of morning.",
+          "imageSystemName": "water.waves"
+        },
+        "actions": [
+          {
+            "type": "toggleFavorite",
+            "payload": {
+              "destinationID": "porto"
+            }
+          }
+        ]
+      },
+      {
+        "id": "discover-note",
+        "type": "badge",
+        "properties": {
+          "text": "Works offline",
+          "tone": "success"
+        }
+      }
+    ]
+  }
+}
