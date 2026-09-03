@@ -13,21 +13,36 @@ public struct ScreenRenderer {
         self.diagnosticPolicy = diagnosticPolicy
     }
 
+    public func render(_ document: ScreenDocument) -> AnyView {
+        render(document, send: { _ in })
+    }
+
     public func render(
         _ document: ScreenDocument,
-        send: @escaping @MainActor @Sendable (DocumentAction) -> Void = { _ in }
+        send: @escaping @MainActor @Sendable (DocumentAction) -> Void
+    ) -> AnyView {
+        renderNode(document.root) { _, action in
+            send(action)
+        }
+    }
+
+    public func render(
+        _ document: ScreenDocument,
+        send: @escaping @MainActor @Sendable (ComponentID, DocumentAction) -> Void
     ) -> AnyView {
         renderNode(document.root, send: send)
     }
 
     private func renderNode(
         _ node: ScreenNode,
-        send: @escaping @MainActor @Sendable (DocumentAction) -> Void
+        send: @escaping @MainActor @Sendable (ComponentID, DocumentAction) -> Void
     ) -> AnyView {
         let context = ComponentContext(
             componentID: node.id,
             actions: node.actions,
-            send: send
+            send: { action in
+                send(node.id, action)
+            }
         )
 
         switch node.type {
@@ -80,7 +95,7 @@ public struct ScreenRenderer {
 
     private func renderChildren(
         _ children: [ScreenNode],
-        send: @escaping @MainActor @Sendable (DocumentAction) -> Void
+        send: @escaping @MainActor @Sendable (ComponentID, DocumentAction) -> Void
     ) -> some View {
         ForEach(children) { child in
             renderNode(child, send: send)

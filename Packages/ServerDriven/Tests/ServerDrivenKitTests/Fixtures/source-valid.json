@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "root": {
+    "id": "source-root",
+    "type": "vertical",
+    "children": [
+      {
+        "id": "source-title",
+        "type": "text",
+        "properties": {
+          "text": "Loaded from a bundle"
+        }
+      }
+    ]
+  }
+}

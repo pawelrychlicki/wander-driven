@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 1,
+  "root": {
+    "id": "source-root",
+    "type": "vertical",
+    "children": [
