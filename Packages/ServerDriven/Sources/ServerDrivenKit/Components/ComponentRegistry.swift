@@ -39,12 +39,68 @@ public struct ComponentRegistry {
         context: ComponentContext
     ) throws -> AnyView {
         guard let registration = registration(for: node.type) else {
-            throw ComponentRegistrationError.wrongComponentType(
-                expected: node.type,
-                actual: node.type
-            )
+            throw ComponentRegistrationError.unknownComponentType(node.type)
         }
 
         return try registration.makeView(for: node, context: context)
+    }
+
+    public func resolve(
+        _ node: ScreenNode,
+        context: ComponentContext
+    ) -> ResolvedComponent {
+        guard let registration = registration(for: node.type) else {
+            return .unsupported(
+                RenderDiagnostic(
+                    code: .unsupportedComponent,
+                    componentID: node.id,
+                    componentType: node.type,
+                    detail: "No registration exists for component type '\(node.type)'."
+                )
+            )
+        }
+
+        do {
+            return .rendered(try registration.makeView(for: node, context: context))
+        } catch let error as ComponentRegistrationError {
+            switch error {
+            case let .invalidProperties(componentType, message):
+                return .invalidProperties(
+                    RenderDiagnostic(
+                        code: .invalidProperties,
+                        componentID: node.id,
+                        componentType: componentType,
+                        detail: message
+                    )
+                )
+            case let .wrongComponentType(expected, actual):
+                return .invalidProperties(
+                    RenderDiagnostic(
+                        code: .invalidProperties,
+                        componentID: node.id,
+                        componentType: expected,
+                        detail: "Expected component type '\(expected)' but received '\(actual)'."
+                    )
+                )
+            case let .unknownComponentType(componentType):
+                return .unsupported(
+                    RenderDiagnostic(
+                        code: .unsupportedComponent,
+                        componentID: node.id,
+                        componentType: componentType,
+                        detail: "No registration exists for component type '\(componentType)'."
+                    )
+                )
+            }
+        } catch {
+            return .invalidProperties(
+                RenderDiagnostic(
+                    code: .invalidProperties,
+                    componentID: node.id,
+                    componentType: node.type,
+                    detail: String(describing: error)
+                )
+            )
+        }
     }
 }

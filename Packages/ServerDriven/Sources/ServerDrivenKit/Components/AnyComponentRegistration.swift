@@ -2,6 +2,7 @@ import Foundation
 import SwiftUI
 
 public enum ComponentRegistrationError: Error, Equatable, Sendable {
+    case unknownComponentType(String)
     case wrongComponentType(expected: String, actual: String)
     case invalidProperties(componentType: String, message: String)
 }
