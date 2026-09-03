@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [main, 'codex/**']
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    name: Package and macro tests
+    runs-on: macos-26
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Select the default Xcode installation
+        run: sudo xcode-select --switch /Applications/Xcode.app
+
+      - name: Run package tests
+        run: swift test --package-path Packages/ServerDriven
+
+  application:
+    name: App verification and UI journeys
+    # The project intentionally targets the iOS 26 SDK for its latest SwiftUI APIs.
+    runs-on: macos-26
+    needs: package
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Select the default Xcode installation
+        run: sudo xcode-select --switch /Applications/Xcode.app
+
+      - name: Install quality tools
+        run: brew install xcodegen swiftformat swiftlint
+
+      - name: Run repository verification
+        run: RUN_UI_TESTS=1 bash scripts/verify.sh

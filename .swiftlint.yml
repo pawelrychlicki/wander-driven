@@ -1,0 +1,14 @@
+included:
+  - WanderDriven
+  - WanderDrivenTests
+  - WanderDrivenUITests
+  - Packages/ServerDriven/Sources
+  - Packages/ServerDriven/Tests
+
+disabled_rules:
+  - file_length
+  - function_body_length
+  - line_length
+  - nesting
+  - trailing_comma
+  - unneeded_synthesized_initializer
