@@ -48,7 +48,6 @@ let package = Package(
                 .process("Fixtures")
             ],
             swiftSettings: [
-                .defaultIsolation(MainActor.self),
                 .enableExperimentalFeature("StrictConcurrency=targeted")
             ]
         ),
@@ -60,7 +59,6 @@ let package = Package(
                 .product(name: "SwiftSyntaxMacrosTestSupport", package: "swift-syntax")
             ],
             swiftSettings: [
-                .defaultIsolation(MainActor.self),
                 .enableExperimentalFeature("StrictConcurrency=targeted")
             ]
         )
