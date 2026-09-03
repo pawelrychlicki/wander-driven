@@ -28,6 +28,8 @@ All content is bundled JSON. There is no backend, network request, authenticatio
 
 ### Screens from the bundled scenarios
 
+![WanderDriven scenario walkthrough](docs/media/wander-driven-demo.gif)
+
 | Discover | Destination Details | Diagnostics Lab |
 | --- | --- | --- |
 | ![WanderDriven Discover screen](docs/media/discover.png) | ![WanderDriven Destination Details screen](docs/media/destination.png) | ![WanderDriven Diagnostics Lab screen](docs/media/diagnostics.png) |
