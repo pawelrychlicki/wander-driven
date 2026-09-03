@@ -21,7 +21,7 @@ public struct ScreenRenderer {
         _ document: ScreenDocument,
         send: @escaping @MainActor @Sendable (DocumentAction) -> Void
     ) -> AnyView {
-        renderNode(document.root) { _, action in
+        renderNode(document.root, state: ScreenState(document: document)) { _, action in
             send(action)
         }
     }
@@ -30,16 +30,36 @@ public struct ScreenRenderer {
         _ document: ScreenDocument,
         send: @escaping @MainActor @Sendable (ComponentID, DocumentAction) -> Void
     ) -> AnyView {
-        renderNode(document.root, send: send)
+        renderNode(document.root, state: ScreenState(document: document), send: send)
+    }
+
+    public func render(
+        _ document: ScreenDocument,
+        state: ScreenState,
+        send: @escaping @MainActor @Sendable (DocumentAction) -> Void
+    ) -> AnyView {
+        renderNode(document.root, state: state) { _, action in
+            send(action)
+        }
+    }
+
+    public func render(
+        _ document: ScreenDocument,
+        state: ScreenState,
+        send: @escaping @MainActor @Sendable (ComponentID, DocumentAction) -> Void
+    ) -> AnyView {
+        renderNode(document.root, state: state, send: send)
     }
 
     private func renderNode(
         _ node: ScreenNode,
+        state: ScreenState,
         send: @escaping @MainActor @Sendable (ComponentID, DocumentAction) -> Void
     ) -> AnyView {
         let context = ComponentContext(
             componentID: node.id,
             actions: node.actions,
+            state: state[node.id],
             send: { action in
                 send(node.id, action)
             }
@@ -49,14 +69,14 @@ public struct ScreenRenderer {
         case "vertical":
             return AnyView(
                 VStack(alignment: .leading, spacing: spacing(from: node)) {
-                    renderChildren(node.children, send: send)
+                    renderChildren(node.children, state: state, send: send)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             )
         case "horizontal":
             return AnyView(
                 HStack(alignment: .top, spacing: spacing(from: node)) {
-                    renderChildren(node.children, send: send)
+                    renderChildren(node.children, state: state, send: send)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             )
@@ -64,7 +84,7 @@ public struct ScreenRenderer {
             return AnyView(
                 ScrollView(.vertical) {
                     LazyVStack(alignment: .leading, spacing: spacing(from: node)) {
-                        renderChildren(node.children, send: send)
+                        renderChildren(node.children, state: state, send: send)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal)
@@ -95,10 +115,11 @@ public struct ScreenRenderer {
 
     private func renderChildren(
         _ children: [ScreenNode],
+        state: ScreenState,
         send: @escaping @MainActor @Sendable (ComponentID, DocumentAction) -> Void
     ) -> some View {
         ForEach(children) { child in
-            renderNode(child, send: send)
+            renderNode(child, state: state, send: send)
         }
     }
 

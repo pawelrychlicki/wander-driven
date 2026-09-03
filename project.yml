@@ -31,21 +31,6 @@ targets:
         GENERATE_INFOPLIST_FILE: YES
         TARGETED_DEVICE_FAMILY: "1"
 
-  WanderDrivenTests:
-    type: bundle.unit-test
-    platform: iOS
-    sources:
-      - path: WanderDrivenTests
-    dependencies:
-      - target: WanderDriven
-    settings:
-      base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.pawelrychlicki.WanderDrivenTests
-        SWIFT_VERSION: "6.0"
-        SWIFT_STRICT_CONCURRENCY: complete
-        SWIFT_DEFAULT_ACTOR_ISOLATION: MainActor
-        GENERATE_INFOPLIST_FILE: YES
-
   WanderDrivenUITests:
     type: bundle.ui-testing
     platform: iOS
@@ -56,6 +41,21 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.pawelrychlicki.WanderDrivenUITests
+        SWIFT_VERSION: "6.0"
+        SWIFT_STRICT_CONCURRENCY: complete
+        SWIFT_DEFAULT_ACTOR_ISOLATION: MainActor
+        GENERATE_INFOPLIST_FILE: YES
+
+  WanderDrivenTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: WanderDrivenTests
+    dependencies:
+      - target: WanderDriven
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.pawelrychlicki.WanderDrivenTests
         SWIFT_VERSION: "6.0"
         SWIFT_STRICT_CONCURRENCY: complete
         SWIFT_DEFAULT_ACTOR_ISOLATION: MainActor

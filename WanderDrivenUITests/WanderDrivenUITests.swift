@@ -1,6 +1,7 @@
 import XCTest
 
-final class WanderDrivenUITests: XCTestCase {
+final nonisolated class WanderDrivenUITests: XCTestCase {
+    @MainActor
     func testLaunchShowsProjectName() {
         let app = XCUIApplication()
         app.launch()

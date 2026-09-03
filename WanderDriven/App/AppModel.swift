@@ -72,12 +72,7 @@ final class AppModel {
 
     private static func makeDefaultRegistry() -> ComponentRegistry {
         do {
-            return try ComponentRegistry {
-                TextComponent.registration
-                ImageComponent.registration
-                ButtonComponent.registration
-                DividerComponent.registration
-            }
+            return try AppComponentRegistry.make()
         } catch {
             preconditionFailure("Default component registration is invalid: \(error)")
         }
