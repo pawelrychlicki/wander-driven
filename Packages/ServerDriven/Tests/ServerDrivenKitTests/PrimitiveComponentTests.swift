@@ -120,6 +120,6 @@ struct PrimitiveComponentTests {
 
         let view = ScreenRenderer(registry: registry).render(document) { _ in }
 
-        #expect(String(describing: type(of: view)).contains("AnyView"))
+        #expect(String(describing: type(of: view)).contains("ScreenNodeView"))
     }
 }

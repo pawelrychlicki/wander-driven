@@ -12,7 +12,9 @@ public struct ScreenReducer: Sendable {
             state.activeEffectIDs.insert(request.id)
             return [.run(id: request.id, request: request)]
         case let .effectCompleted(id, result):
-            state.activeEffectIDs.remove(id)
+            guard state.activeEffectIDs.remove(id) != nil else {
+                return []
+            }
             state.lastEffectResult = result
             return []
         case let .cancelEffect(id):

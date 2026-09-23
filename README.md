@@ -6,7 +6,7 @@ The project is deliberately compact: a reviewer can follow the entire path from 
 
 ## What this demonstrates
 
-- Swift 6 and iOS 26 with SwiftUI, Observation (`@Observable`), structured concurrency, and strict `Sendable` boundaries.
+- Swift 6 and iOS 26 with SwiftUI, Observation (`@Observable`), explicit task cancellation, and strict `Sendable` boundaries.
 - A reusable `ServerDrivenKit` Swift package with decoding, validation, registry resolution, rendering, diagnostics, actions, effects, and a reducer-driven store.
 - A SwiftSyntax `@SDUIComponent` attached macro that removes repetitive type-erasure and property-decoding glue while keeping registration explicit.
 - Native SwiftUI components with Dynamic Type, dark-mode-friendly materials, semantic typography, 44-point interaction targets, and VoiceOver labels.
@@ -62,7 +62,7 @@ flowchart LR
 | `ComponentRegistry` | Explicit mapping from a wire component type to a strongly typed factory; type erasure is limited to this heterogeneous edge. |
 | `ScreenRenderer` | Recursive rendering of layout primitives and registered content, with local diagnostic fallbacks. |
 | `ScreenReducer` | Synchronous and deterministic state transitions for favorites, alerts, effects, and external actions. |
-| `ScreenStore` | `@MainActor` observable owner that dispatches actions, runs/cancels effects, and publishes a small revision token for cached screen stores. |
+| `ScreenStore` | `@MainActor` observable owner that dispatches actions, runs/cancels effects, and publishes state changes directly to SwiftUI. |
 | `WanderDriven` | App-owned routes, local source, travel components, UIKit integration, and scenario presentation. |
 
 ## Schema example
@@ -212,13 +212,13 @@ xcodebuild -project WanderDriven.xcodeproj \
   test
 ```
 
-Run the fast checks (formatting, linting, package tests, project generation, and a clean build of app/test bundles):
+Run the repository checks (formatting, linting, package tests, project generation, and app unit tests):
 
 ```bash
 bash scripts/verify.sh
 ```
 
-Set `RUN_UI_TESTS=1` to add the three XCUITest journeys, as the application job in CI does. `UI_TEST_DESTINATION` can override the simulator when its name differs:
+Set `RUN_UI_TESTS=1` to add the three XCUITest journeys, as the application job in CI does. `UI_TEST_DESTINATION` selects the simulator for both app and UI tests when its name differs:
 
 ```bash
 RUN_UI_TESTS=1 \

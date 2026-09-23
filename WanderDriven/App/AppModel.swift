@@ -1,6 +1,11 @@
 import Observation
 import ServerDrivenKit
 
+enum ScreenLoadState {
+    case loaded(ScreenStore)
+    case failed(String)
+}
+
 @MainActor
 @Observable
 final class AppModel {
@@ -9,11 +14,7 @@ final class AppModel {
     let validator: DocumentValidator
 
     var navigationPath: [AppRoute] = []
-    private(set) var loadError: String?
-    private(set) var storeRevision = 0
-
-    @ObservationIgnored
-    private var stores: [AppRoute: ScreenStore] = [:]
+    private(set) var screens: [AppRoute: ScreenLoadState] = [:]
 
     init(
         documentSource: any ScreenDocumentSource = BundleScreenDocumentSource(),
@@ -30,7 +31,7 @@ final class AppModel {
     }
 
     func prepareStore(for route: AppRoute) {
-        guard stores[route] == nil else {
+        guard screens[route] == nil else {
             return
         }
 
@@ -40,32 +41,27 @@ final class AppModel {
             )
             let issues = validator.validate(document)
             guard issues.isEmpty else {
-                loadError = issues.map(\.message).joined(separator: "\n")
+                screens[route] = .failed(issues.map(\.message).joined(separator: "\n"))
                 return
             }
 
-            stores[route] = ScreenStore(
+            screens[route] = .loaded(ScreenStore(
                 document: document,
                 externalActionHandler: ExternalActionHandler { [weak self] action in
                     self?.handleExternalAction(action)
                 }
-            )
-            storeRevision += 1
-            loadError = nil
+            ))
         } catch {
-            loadError = String(describing: error)
-            storeRevision += 1
+            screens[route] = .failed(String(describing: error))
         }
     }
 
-    func store(for route: AppRoute) -> ScreenStore? {
-        stores[route]
+    func screen(for route: AppRoute) -> ScreenLoadState? {
+        screens[route]
     }
 
     func retry(route: AppRoute) {
-        stores[route] = nil
-        storeRevision += 1
-        loadError = nil
+        screens[route] = nil
         prepareStore(for: route)
     }
 

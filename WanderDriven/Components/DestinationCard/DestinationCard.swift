@@ -25,17 +25,8 @@ struct DestinationCard: ComponentDefinition {
         }
     }
 
-    static func favoriteAction(
-        for properties: Properties,
-        actions: [DocumentAction]
-    ) -> DocumentAction {
-        actions.first(where: { $0.type == "toggleFavorite" }) ??
-            DocumentAction(
-                type: "toggleFavorite",
-                payload: .object([
-                    "destinationID": .string(properties.destinationID),
-                ])
-            )
+    static func favoriteAction(in actions: [DocumentAction]) -> DocumentAction? {
+        actions.first(where: { $0.type == "toggleFavorite" })
     }
 
     @MainActor
@@ -43,20 +34,24 @@ struct DestinationCard: ComponentDefinition {
         properties: Properties,
         context: ComponentContext
     ) -> some View {
-        DestinationCardView(
+        let onFavorite: (@MainActor @Sendable () -> Void)? = if let action = favoriteAction(in: context.actions) {
+            { context.send(action) }
+        } else {
+            nil
+        }
+
+        let onSelect: (@MainActor @Sendable () -> Void)? = if let action = context.actions.first(where: { $0.type == "navigate" }) {
+            { context.send(action) }
+        } else {
+            nil
+        }
+
+        return DestinationCardView(
             componentID: context.componentID,
             properties: properties,
             isFavorite: context.state.isFavorite,
-            onFavorite: {
-                context.send(
-                    favoriteAction(for: properties, actions: context.actions)
-                )
-            },
-            onSelect: {
-                if let action = context.actions.first(where: { $0.type == "navigate" }) {
-                    context.send(action)
-                }
-            }
+            onFavorite: onFavorite,
+            onSelect: onSelect
         )
     }
 }

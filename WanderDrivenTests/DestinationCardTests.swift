@@ -30,29 +30,16 @@ struct DestinationCardTests {
         }
     }
 
-    @Test("preserves a declared favorite action and provides a safe fallback")
-    func buildsFavoriteAction() {
-        let properties = DestinationCard.Properties(
-            destinationID: "lisbon",
-            name: "Lisbon",
-            country: "Portugal",
-            summary: "Sunlit streets and Atlantic air.",
-            imageSystemName: "sun.horizon"
-        )
+    @Test("only exposes a favorite action when the document declares one")
+    func selectsFavoriteAction() {
         let declaredAction = DocumentAction(
             type: "toggleFavorite",
             payload: .object(["destinationID": .string("lisbon")])
         )
 
         #expect(
-            DestinationCard.favoriteAction(
-                for: properties,
-                actions: [declaredAction]
-            ) == declaredAction
+            DestinationCard.favoriteAction(in: [declaredAction]) == declaredAction
         )
-        #expect(
-            DestinationCard.favoriteAction(for: properties, actions: []) ==
-                declaredAction
-        )
+        #expect(DestinationCard.favoriteAction(in: []) == nil)
     }
 }

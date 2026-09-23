@@ -24,9 +24,17 @@ public struct RenderDiagnostic: Equatable, Sendable {
     }
 }
 
-public enum DiagnosticPolicy: Sendable {
+public enum DiagnosticPolicy: Equatable, Sendable {
     case debug
     case release
+
+    public static var current: Self {
+        #if DEBUG
+            .debug
+        #else
+            .release
+        #endif
+    }
 
     public func message(for diagnostic: RenderDiagnostic) -> String {
         switch self {

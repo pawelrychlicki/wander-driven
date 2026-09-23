@@ -7,6 +7,7 @@ final nonisolated class WanderDrivenUITests: XCTestCase {
         app.launch()
 
         XCTAssertTrue(app.staticTexts["WanderDriven"].waitForExistence(timeout: 5))
+        XCTAssertGreaterThan(app.windows.firstMatch.frame.height, 480)
     }
 
     @MainActor
@@ -17,6 +18,7 @@ final nonisolated class WanderDrivenUITests: XCTestCase {
 
         XCTAssertTrue(favoriteButton.waitForExistence(timeout: 5))
         XCTAssertTrue(openButton.waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["sdui.porto-card.open"].exists)
         XCTAssertEqual(favoriteButton.value as? String, "Not a favorite")
 
         favoriteButton.tap()

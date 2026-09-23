@@ -102,6 +102,7 @@ public struct ButtonComponent: ComponentDefinition {
             context.send(action)
         }
         .buttonStyle(.borderedProminent)
+        .disabled(context.actions.isEmpty)
         .frame(minWidth: 44, minHeight: 44)
         .accessibilityLabel(properties.title)
         .accessibilityIdentifier("sdui.\(context.componentID.rawValue)")

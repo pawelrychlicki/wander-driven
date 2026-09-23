@@ -44,13 +44,13 @@ The wire type is dynamic, so `AnyComponentRegistration` and `AnyView` are necess
 - Documents, actions, effects, and diagnostics are `Sendable` value types.
 - UI factories and `ScreenStore` are `@MainActor`.
 - `ScreenEffectExecutor` is an injected async dependency. A running task is associated with a `ScreenEffectID`; cancellation removes the ID and late results are ignored.
-- The running-task dictionary is deliberately `@ObservationIgnored`. `ScreenStore.stateRevision` is the observable invalidation token, avoiding accidental observation of task implementation details.
+- The running-task dictionary is deliberately `@ObservationIgnored`. SwiftUI observes `ScreenStore.state` directly; unchanged reducer output is not reassigned.
 
-## Why the app has a revision token
+## Route-scoped loading and observation
 
-The app caches one store per route, but the cache itself is not an observed collection. `storeRevision` tells the host when a route has finished loading or needs to display an error. `stateRevision` tells a rendered document when a reducer action completed. This keeps the cache private while making the rendering boundary deterministic in SwiftUI.
+The app caches a load result per route in an observed collection. A failure on one route cannot replace another route's content or error. The rendered screen reads its store's state directly, so a favorite update does not change the identity of the whole screen or reset its scroll position.
 
-The trade-off is that the current demo reconstructs the rendered document after an action. A production implementation could observe a finer-grained state projection or preserve scroll position explicitly; the invariant that state lives in the store would remain unchanged.
+For larger feeds, per-component observable projections could reduce redraw fan-out further; the immutable document and normalized state boundaries would remain unchanged.
 
 ## Testing map
 
@@ -64,6 +64,7 @@ The trade-off is that the current demo reconstructs the rendered document after 
 | Effect result and cancellation lifecycle | `ScreenStoreTests.swift` |
 | Travel component properties and UIKit updates | `WanderDrivenTests` |
 | Bundled scenario contracts | `WanderDrivenTests/DocumentFixtureTests.swift` |
+| Route-scoped loading and retry | `WanderDrivenTests/AppModelTests.swift` |
 | End-to-end navigation, alert, favorite persistence, and diagnostics | `WanderDrivenUITests/WanderDrivenUITests.swift` |
 
 All tests use local data and deterministic dependencies. No test needs a network connection or wall-clock timing.

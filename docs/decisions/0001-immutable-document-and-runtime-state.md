@@ -27,5 +27,5 @@ Actions carry stable IDs or document payloads; they never mutate a `ScreenNode`.
 ### Trade-offs
 
 - The renderer needs a lookup from a component ID to its current state.
-- The demo uses a revision token to invalidate a cached rendered tree; a production app may prefer finer-grained observation to preserve scroll position during every update.
+- The host observes route load results and screen state directly. It does not force a new rendered-tree identity after every action, preserving scroll position and local view state.
 - State migration is a future concern if a new schema changes component identity. Stable IDs are therefore part of the document contract, not an implementation detail.

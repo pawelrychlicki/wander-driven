@@ -14,7 +14,7 @@ jobs:
     runs-on: macos-26
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Select the default Xcode installation
         run: sudo xcode-select --switch /Applications/Xcode.app
@@ -29,7 +29,7 @@ jobs:
     needs: package
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Select the default Xcode installation
         run: sudo xcode-select --switch /Applications/Xcode.app

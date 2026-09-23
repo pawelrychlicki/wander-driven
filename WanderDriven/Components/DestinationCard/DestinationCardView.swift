@@ -5,41 +5,22 @@ struct DestinationCardView: View {
     let componentID: ComponentID
     let properties: DestinationCard.Properties
     let isFavorite: Bool
-    let onFavorite: @MainActor @Sendable () -> Void
-    let onSelect: @MainActor @Sendable () -> Void
+    let onFavorite: (@MainActor @Sendable () -> Void)?
+    let onSelect: (@MainActor @Sendable () -> Void)?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Button(action: onSelect) {
-                VStack(alignment: .leading, spacing: 12) {
-                    Image(systemName: properties.imageSystemName)
-                        .font(.system(size: 42, weight: .medium))
-                        .foregroundStyle(.tint)
-                        .frame(maxWidth: .infinity, minHeight: 72, alignment: .leading)
-                        .accessibilityHidden(true)
-
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(properties.name)
-                            .font(.title2.weight(.semibold))
-                            .foregroundStyle(.primary)
-                        Text(properties.country)
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                    }
-
-                    Text(properties.summary)
-                        .font(.body)
-                        .foregroundStyle(.primary)
-                        .multilineTextAlignment(.leading)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+            if let onSelect {
+                Button(action: onSelect) {
+                    content
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .contentShape(.rect)
+                .buttonStyle(.plain)
+                .accessibilityIdentifier("sdui.\(componentID.rawValue).open")
+                .accessibilityLabel("Open \(properties.name), \(properties.country)")
+                .accessibilityHint("Shows destination details")
+            } else {
+                content
             }
-            .buttonStyle(.plain)
-            .accessibilityIdentifier("sdui.\(componentID.rawValue).open")
-            .accessibilityLabel("Open \(properties.name), \(properties.country)")
-            .accessibilityHint("Shows destination details")
 
             HStack(spacing: 12) {
                 BadgeView(
@@ -47,18 +28,20 @@ struct DestinationCardView: View {
                     tone: .accent
                 )
 
-                Spacer(minLength: 8)
+                if let onFavorite {
+                    Spacer(minLength: 8)
 
-                Button(action: onFavorite) {
-                    Label(
-                        isFavorite ? "Remove favorite" : "Add favorite",
-                        systemImage: isFavorite ? "heart.fill" : "heart"
-                    )
+                    Button(action: onFavorite) {
+                        Label(
+                            isFavorite ? "Remove favorite" : "Add favorite",
+                            systemImage: isFavorite ? "heart.fill" : "heart"
+                        )
+                    }
+                    .buttonStyle(.bordered)
+                    .frame(minWidth: 44, minHeight: 44)
+                    .accessibilityIdentifier("sdui.\(componentID.rawValue).favorite")
+                    .accessibilityValue(isFavorite ? "Favorite" : "Not a favorite")
                 }
-                .buttonStyle(.bordered)
-                .frame(minWidth: 44, minHeight: 44)
-                .accessibilityIdentifier("sdui.\(componentID.rawValue).favorite")
-                .accessibilityValue(isFavorite ? "Favorite" : "Not a favorite")
             }
         }
         .padding(20)
@@ -68,5 +51,32 @@ struct DestinationCardView: View {
                 .strokeBorder(.quaternary, lineWidth: 1)
         }
         .accessibilityElement(children: .contain)
+    }
+
+    private var content: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Image(systemName: properties.imageSystemName)
+                .font(.system(size: 42, weight: .medium))
+                .foregroundStyle(.tint)
+                .frame(maxWidth: .infinity, minHeight: 72, alignment: .leading)
+                .accessibilityHidden(true)
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(properties.name)
+                    .font(.title2.weight(.semibold))
+                    .foregroundStyle(.primary)
+                Text(properties.country)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
+
+            Text(properties.summary)
+                .font(.body)
+                .foregroundStyle(.primary)
+                .multilineTextAlignment(.leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .contentShape(.rect)
     }
 }

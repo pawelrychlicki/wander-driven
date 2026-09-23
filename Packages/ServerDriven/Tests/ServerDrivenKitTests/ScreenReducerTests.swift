@@ -126,6 +126,23 @@ struct ScreenReducerTests {
         #expect(document == initialDocument)
     }
 
+    @Test("ignores an effect result after cancellation")
+    func ignoresCancelledEffectResult() {
+        var state = ScreenState(document: makeDocument())
+        let reducer = ScreenReducer()
+        let request = ScreenEffectRequest(id: "refresh", kind: .refresh)
+
+        _ = reducer.reduce(&state, .startEffect(request))
+        _ = reducer.reduce(&state, .cancelEffect(id: request.id))
+        _ = reducer.reduce(
+            &state,
+            .effectCompleted(id: request.id, result: .success(.completed))
+        )
+
+        #expect(state.activeEffectIDs.isEmpty)
+        #expect(state.lastEffectResult == nil)
+    }
+
     private func makeDocument() -> ScreenDocument {
         ScreenDocument(
             schemaVersion: 1,

@@ -16,6 +16,14 @@ struct BadgeView: View {
     }
 
     var body: some View {
+        if let accessibilityIdentifier {
+            badge.accessibilityIdentifier(accessibilityIdentifier)
+        } else {
+            badge
+        }
+    }
+
+    private var badge: some View {
         Label(text, systemImage: tone.systemImage)
             .font(.caption.weight(.semibold))
             .foregroundStyle(tone.color)
@@ -24,6 +32,5 @@ struct BadgeView: View {
             .background(tone.color.opacity(0.12), in: Capsule())
             .accessibilityElement(children: .combine)
             .accessibilityLabel(text)
-            .accessibilityIdentifier(accessibilityIdentifier ?? "")
     }
 }

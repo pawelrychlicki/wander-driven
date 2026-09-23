@@ -25,21 +25,24 @@ echo "==> Generate Xcode project"
 xcodegen generate
 
 derived_data="${TMPDIR:-/tmp}/WanderDrivenDerivedData"
-echo "==> Build app and test bundles"
+simulator_destination="${UI_TEST_DESTINATION:-platform=iOS Simulator,name=iPhone 17 Pro}"
+echo "==> App unit tests"
 xcodebuild \
   -project WanderDriven.xcodeproj \
   -scheme WanderDriven \
-  -destination "generic/platform=iOS Simulator" \
+  -destination "$simulator_destination" \
   -derivedDataPath "$derived_data" \
   CODE_SIGNING_ALLOWED=NO \
-  build-for-testing
+  -only-testing:WanderDrivenTests \
+  test \
+  -quiet
 
 if [[ "${RUN_UI_TESTS:-0}" == "1" ]]; then
   echo "==> UI tests"
   xcodebuild \
     -project WanderDriven.xcodeproj \
     -scheme WanderDriven \
-    -destination "${UI_TEST_DESTINATION:-platform=iOS Simulator,name=iPhone 17 Pro}" \
+    -destination "$simulator_destination" \
     -derivedDataPath "$derived_data" \
     CODE_SIGNING_ALLOWED=NO \
     -only-testing:WanderDrivenUITests \

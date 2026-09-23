@@ -90,6 +90,12 @@ struct ComponentResolutionTests {
             DiagnosticPolicy.release.message(for: diagnostic) ==
                 "This content is temporarily unavailable."
         )
+
+        #if DEBUG
+            #expect(DiagnosticPolicy.current == .debug)
+        #else
+            #expect(DiagnosticPolicy.current == .release)
+        #endif
     }
 
     @SDUIComponent("test.component")
