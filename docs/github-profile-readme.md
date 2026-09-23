@@ -1,6 +1,6 @@
 # GitHub profile README draft
 
-This copy is ready to adapt for the special `pawelrychlicki/pawelrychlicki` profile repository after WanderDriven is published. Keep the project link updated with the final repository URL.
+This copy is ready to adapt for the special `pawelrychlicki/pawelrychlicki` profile repository. It links to the now-public WanderDriven project.
 
 ---
 
@@ -20,9 +20,7 @@ In my day-to-day work, I contribute to framework-level iOS development involving
 
 ## Featured project
 
-**WanderDriven** — an iOS 26+ Server-Driven UI demo built with Swift 6, SwiftUI, a focused UIKit bridge, an explicit component registry, and a macro-generated component adapter. It includes local travel scenarios, reducer-driven state, diagnostics for malformed content, and automated tests.
-
-<!-- After publication, link this heading to the project repository. -->
+[WanderDriven](https://github.com/pawelrychlicki/wander-driven) — an iOS 26+ Server-Driven UI demo built with Swift 6, SwiftUI, a focused UIKit bridge, an explicit component registry, and a macro-generated component adapter. It includes local travel scenarios, reducer-driven state, diagnostics for malformed content, and automated tests.
 
 ## Get in touch
 
